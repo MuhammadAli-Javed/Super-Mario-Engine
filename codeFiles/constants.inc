@@ -1,3 +1,4 @@
+; Constants shared by the whole team
 SCREEN_W   equ 320
 SCREEN_H   equ 200
 MAP_W      equ 60
