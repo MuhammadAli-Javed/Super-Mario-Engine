@@ -1,0 +1,44 @@
+; Shared game variables. All modules use these names.
+bufferSeg       dw 0
+oldKeyOff       dw 0
+oldKeySeg       dw 0
+oldTickOff      dw 0
+oldTickSeg      dw 0
+irqInstalled    db 0
+keysDown        times 128 db 0
+keysPrev        times 128 db 0
+timerTicks      dw 0
+lastTick        dw 0
+state           db ST_TITLE
+menuChoice      db 0
+stateTimer      dw 0
+tickPart        dw 0
+cameraX         dw 0
+levelTime       dw 300
+lives           db 3
+coins           db 0
+health          db 1
+scoreLow        dw 0
+scoreHigh       dw 0
+invuln          db 0
+stompCount      db 0
+marioX          dw 32
+marioXFrac      db 0
+marioY          dw 144
+marioYFrac      db 0
+oldMarioY       dw 144
+marioVX         dw 0
+marioVY         dw 0
+onGround        db 1
+jumpReady       db 1
+marioFace       db 0
+marioPose       db 0
+pitDeath        db 0
+mushActive      db 0
+mushX           dw 0
+mushY           dw 0
+mushDir         db 1
+coinPopTimer    db 0
+coinPopX        dw 0
+coinPopY        dw 0
+numberText      db '000000',0
