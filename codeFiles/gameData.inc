@@ -1,3 +1,4 @@
+; Shared game variables. All modules use these names.
 bufferSeg       dw 0
 oldKeyOff       dw 0
 oldKeySeg       dw 0
