@@ -38,7 +38,6 @@ push bp
     mov es, ax
     mov ax, [bp+8]
     mov [es:di], al
-
     .end:
     pop es
     pop di
