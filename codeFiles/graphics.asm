@@ -357,3 +357,6 @@ drawText:
     pop ax
     pop bp
     ret
+
+%include "assets/font.inc"
+
