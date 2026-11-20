@@ -124,3 +124,21 @@ fillRect:
     mov sp, bp
     pop bp
     ret
+
+clearFrame:
+    push ax
+    push cx
+    push di
+    push es
+    mov ax, [bufferSeg]
+    mov es, ax
+    xor di, di
+    mov ax, 0909h
+    mov cx, 32000
+    cld
+    rep stosw
+    pop es
+    pop di
+    pop cx
+    pop ax
+    ret
