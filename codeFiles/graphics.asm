@@ -328,3 +328,32 @@ drawChar:
     mov sp, bp
     pop bp
     ret
+
+drawText:
+    push bp
+    mov bp, sp
+    push ax
+    push bx
+    push si
+    mov bx, [bp+4]
+    mov si, [bp+8]
+.loop:
+    mov al, [si]
+    or al, al
+    jz .done
+    xor ah, ah
+    push word [bp+10]
+    push ax
+    push word [bp+6]
+    push bx
+    call drawChar
+    add sp, 8
+    add bx, 6
+    inc si
+    jmp .loop
+.done:
+    pop si
+    pop bx
+    pop ax
+    pop bp
+    ret
