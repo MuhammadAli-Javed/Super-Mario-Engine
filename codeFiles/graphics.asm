@@ -88,3 +88,39 @@ fillRect:
     jge .end
     mov ax, [bufferSeg]
     mov es, ax
+.row:
+    mov di, dx
+    shl di, 1
+    shl di, 1
+    shl di, 1
+    shl di, 1
+    shl di, 1
+    shl di, 1
+    mov ax, dx
+    shl ax, 1
+    shl ax, 1
+    shl ax, 1
+    shl ax, 1
+    shl ax, 1
+    shl ax, 1
+    shl ax, 1
+    shl ax, 1
+    add di, ax
+    add di, [bp-2]
+    mov cx, [bp-4]
+    sub cx, [bp-2]
+    mov ax, [bp+12]
+    cld
+    rep stosb
+    inc dx
+    cmp dx, [bp-8]
+    jl .row
+.end:
+    pop es
+    pop di
+    pop dx
+    pop cx
+    pop ax
+    mov sp, bp
+    pop bp
+    ret
