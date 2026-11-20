@@ -56,3 +56,35 @@ fillRect:
     push dx
     push di
     push es
+    mov ax, [bp+4]
+    mov [bp-2], ax
+    add ax, [bp+8]
+    mov [bp-4], ax
+    mov ax, [bp+6]
+    mov [bp-6], ax
+    add ax, [bp+10]
+    mov [bp-8], ax
+    cmp word [bp-2], 0
+    jge .leftOk
+    mov word [bp-2], 0
+.leftOk:
+    cmp word [bp-4], 320
+    jle .rightOk
+    mov word [bp-4], 320
+.rightOk:
+    cmp word [bp-6], 0
+    jge .topOk
+    mov word [bp-6], 0
+.topOk:
+    cmp word [bp-8], 200
+    jle .bottomOk
+    mov word [bp-8], 200
+.bottomOk:
+    mov ax, [bp-2]
+    cmp ax, [bp-4]
+    jge .end
+    mov dx, [bp-6]
+    cmp dx, [bp-8]
+    jge .end
+    mov ax, [bufferSeg]
+    mov es, ax
