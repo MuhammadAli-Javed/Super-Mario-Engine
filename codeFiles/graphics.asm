@@ -283,3 +283,48 @@ drawChar:
     mov bl, 44
 .p8:
     mov al, bl
+.haveIndex:
+    xor ah, ah
+    mov si, ax
+    shl si, 1
+    shl si, 1
+    shl si, 1
+    sub si, ax           ; index * 7 bytes
+    add si, fontGlyphs
+    mov word [bp-2], 0
+.charRow:
+    cmp word [bp-2], 7
+    jge .done
+    mov word [bp-4], 0
+.charCol:
+    mov al, [si]
+    mov cl, [bp-4]
+    mov bl, 10h
+    shr bl, cl
+    test al, bl
+    jz .skip
+    push word [bp+10]
+    mov bx, [bp+6]
+    add bx, [bp-2]
+    push bx
+    mov bx, [bp+4]
+    add bx, [bp-4]
+    push bx
+    call putPixel
+    add sp, 6
+.skip:
+    inc word [bp-4]
+    cmp word [bp-4], 5
+    jl .charCol
+    inc si
+    inc word [bp-2]
+    jmp .charRow
+.done:
+    pop si
+    pop dx
+    pop cx
+    pop bx
+    pop ax
+    mov sp, bp
+    pop bp
+    ret
