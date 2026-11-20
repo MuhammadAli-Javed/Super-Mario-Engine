@@ -223,3 +223,63 @@ drawSprite:
     mov sp, bp
     pop bp
     ret
+
+drawChar:
+    push bp
+    mov bp, sp
+    sub sp, 4
+    push ax
+    push bx
+    push cx
+    push dx
+    push si
+    mov ax, [bp+8]
+    cmp al, 'A'
+    jb .digit
+    cmp al, 'Z'
+    ja .digit
+    sub al, 'A'
+    jmp .haveIndex
+.digit:
+    cmp al, '0'
+    jb .punct
+    cmp al, '9'
+    ja .punct
+    sub al, '0'
+    add al, 26
+    jmp .haveIndex
+.punct:
+    mov bl, 36
+    cmp al, ':'
+    jne .p1
+    mov bl, 37
+.p1:
+    cmp al, '-'
+    jne .p2
+    mov bl, 38
+.p2:
+    cmp al, '?'
+    jne .p3
+    mov bl, 39
+.p3:
+    cmp al, '/'
+    jne .p4
+    mov bl, 40
+.p4:
+    cmp al, '.'
+    jne .p5
+    mov bl, 41
+.p5:
+    cmp al, '+'
+    jne .p6
+    mov bl, 42
+.p6:
+    cmp al, '!'
+    jne .p7
+    mov bl, 43
+.p7:
+    cmp al, '='
+    jne .p8
+    mov bl, 44
+.p8:
+    mov al, bl
