@@ -166,3 +166,60 @@ showFrame:
     pop cx
     pop ax
     ret
+
+drawSprite:
+    push bp
+    mov bp, sp
+    sub sp, 4            ; current row and column
+    push ax
+    push bx
+    push cx
+    push dx
+    push si
+    mov si, [bp+8]
+    mov word [bp-2], 0
+.nextRow:
+    mov ax, 16
+    test word [bp+10], 2
+    jz .heightSet
+    mov ax, 32
+.heightSet:
+    cmp [bp-2], ax
+    jge .done
+    mov word [bp-4], 0
+.nextCol:
+    mov al, [si]
+    inc si
+    or al, al
+    jz .skipPixel
+    xor ah, ah
+    push ax             ; colour
+    mov bx, [bp+6]
+    add bx, [bp-2]
+    push bx             ; y
+    mov bx, [bp-4]
+    test word [bp+10], 1
+    jz .notMirror
+    mov cx, 15
+    sub cx, bx
+    mov bx, cx
+.notMirror:
+    add bx, [bp+4]
+    push bx             ; x
+    call putPixel
+    add sp, 6
+.skipPixel:
+    inc word [bp-4]
+    cmp word [bp-4], 16
+    jl .nextCol
+    inc word [bp-2]
+    jmp .nextRow
+.done:
+    pop si
+    pop dx
+    pop cx
+    pop bx
+    pop ax
+    mov sp, bp
+    pop bp
+    ret
