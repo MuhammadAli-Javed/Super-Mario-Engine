@@ -47,3 +47,12 @@ push bp
     pop bp
     ret
 
+fillRect:
+    push bp
+    mov bp, sp
+    sub sp, 8            ; local: left, right, top, bottom
+    push ax
+    push cx
+    push dx
+    push di
+    push es
