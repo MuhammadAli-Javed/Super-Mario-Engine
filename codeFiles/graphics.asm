@@ -142,3 +142,27 @@ clearFrame:
     pop cx
     pop ax
     ret
+
+showFrame:
+    push ax
+    push cx
+    push si
+    push di
+    push ds
+    push es
+    mov ax, [bufferSeg]
+    mov ds, ax
+    mov ax, 0A000h
+    mov es, ax
+    xor si, si
+    xor di, di
+    mov cx, 32000
+    cld
+    rep movsw
+    pop es
+    pop ds
+    pop di
+    pop si
+    pop cx
+    pop ax
+    ret
