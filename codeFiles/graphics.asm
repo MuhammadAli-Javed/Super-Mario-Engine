@@ -9,3 +9,14 @@ push bp
     mov bx, [bp+4]
     cmp bx, 0
     jl .end
+
+
+    .end:
+    pop es
+    pop di
+    pop dx
+    pop bx
+    pop ax
+    pop bp
+    ret
+
