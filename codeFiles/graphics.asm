@@ -1,3 +1,7 @@
+; framebuffer, pixel drawing and small bitmap sprites (My PArt AbdulSubhan)
+
+; Draw one pixel into the frame buffer, with clipping.
+; Stack: [bp+4]=x, +6=y, +8=colour. Returns nothing. Preserves all registers.
 putPixel:
 push bp
     mov bp, sp
@@ -46,6 +50,10 @@ push bp
     pop ax
     pop bp
     ret
+
+; Filled, clipped rectangle drawn to the framebuffer.
+; Stack: x, y, width, height, colour (push colour first, x last).
+; Returns nothing. All registers preserved. Uses REP STOSB per row.
 
 fillRect:
     push bp
@@ -125,6 +133,9 @@ fillRect:
     pop bp
     ret
 
+; Clear the full off-screen buffer using REP STOSW.
+; Inputs: none. Output: framebuffer filled with sky colour. Preserves registers.
+
 clearFrame:
     push ax
     push cx
@@ -142,6 +153,9 @@ clearFrame:
     pop cx
     pop ax
     ret
+
+; Copy exactly 64000 bytes into VGA A000:0000 using REP MOVSW.
+; Inputs: none. Output: displayed frame. Preserves registers.
 
 showFrame:
     push ax
@@ -166,6 +180,11 @@ showFrame:
     pop cx
     pop ax
     ret
+
+; Transparent sprite renderer. 16 pixels wide, height 16 or 32.
+; Stack: x, y, bitmap pointer, flags (bit0=mirror, bit1=tall).
+; Colour zero is transparent. All four edges are clipped by putPixel.
+; Returns nothing, preserves all registers.
 
 drawSprite:
     push bp
@@ -223,6 +242,9 @@ drawSprite:
     mov sp, bp
     pop bp
     ret
+
+; Basic 5x7 bitmap font. fontGlyphs: 7 row bytes for each character.
+; drawChar stack: x, y, ASCII code, colour. Preserves all registers.
 
 drawChar:
     push bp
@@ -329,6 +351,8 @@ drawChar:
     pop bp
     ret
 
+; Draw zero-terminated uppercase text at x/y.
+; Stack: x,y,string address,colour. Nothing returned; registers preserved.
 drawText:
     push bp
     mov bp, sp
