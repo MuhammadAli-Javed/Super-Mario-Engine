@@ -106,3 +106,174 @@ drawHeart:
     mov sp, bp
     pop bp
     ret
+
+    drawHUD:
+    push ax
+    push bx
+    mov ax, 1
+    push ax
+    mov ax, 16
+    push ax
+    mov ax, 320
+    push ax
+    mov ax, 0
+    push ax
+    mov ax, 0
+    push ax
+    call fillRect
+    add sp, 10
+
+    mov ax, 15
+    push ax
+    mov ax, hudScoreText
+    push ax
+    mov ax, 4
+    push ax
+    mov ax, 2
+    push ax
+    call drawText
+    add sp, 8
+    mov ax, 14
+    push ax
+    mov ax, 6
+    push ax
+    push word [scoreHigh]
+    push word [scoreLow]
+    mov ax, 4
+    push ax
+    mov ax, 33
+    push ax
+    call drawNumber
+    add sp, 12
+
+    mov ax, 15
+    push ax
+    mov ax, hudCoinText
+    push ax
+    mov ax, 4
+    push ax
+    mov ax, 74
+    push ax
+    call drawText
+    add sp, 8
+    xor bx, bx
+    mov bl, [coins]
+    mov ax, 14
+    push ax
+    mov ax, 2
+    push ax
+    mov ax, 0
+    push ax
+    push bx
+    mov ax, 4
+    push ax
+    mov ax, 105
+    push ax
+    call drawNumber
+    add sp, 12
+
+    mov ax, 15
+    push ax
+    mov ax, hudWorldText
+    push ax
+    mov ax, 4
+    push ax
+    mov ax, 119
+    push ax
+    call drawText
+    add sp, 8
+    mov ax, 14
+    push ax
+    mov ax, hudWorldNum
+    push ax
+    mov ax, 4
+    push ax
+    mov ax, 150
+    push ax
+    call drawText
+    add sp, 8
+
+    mov ax, 15
+    push ax
+    mov ax, hudTimeText
+    push ax
+    mov ax, 4
+    push ax
+    mov ax, 171
+    push ax
+    call drawText
+    add sp, 8
+    mov ax, 14
+    push ax
+    mov ax, 3
+    push ax
+    mov ax, 0
+    push ax
+    push word [levelTime]
+    mov ax, 4
+    push ax
+    mov ax, 197
+    push ax
+    call drawNumber
+    add sp, 12
+
+    mov ax, 15
+    push ax
+    mov ax, hudLivesText
+    push ax
+    mov ax, 4
+    push ax
+    mov ax, 218
+    push ax
+    call drawText
+    add sp, 8
+    xor bx, bx
+    mov bl, [lives]
+    mov ax, 14
+    push ax
+    mov ax, 2
+    push ax
+    mov ax, 0
+    push ax
+    push bx
+    mov ax, 4
+    push ax
+    mov ax, 249
+    push ax
+    call drawNumber
+    add sp, 12
+
+    mov ax, 15
+    push ax
+    mov ax, hudHealthText
+    push ax
+    mov ax, 4
+    push ax
+    mov ax, 268
+    push ax
+    call drawText
+    add sp, 8
+    ; Filled heart, followed by a filled or empty outline heart.
+    mov ax, 1
+    push ax
+    mov ax, 3
+    push ax
+    mov ax, 293
+    push ax
+    call drawHeart
+    add sp, 6
+    xor ax, ax
+    cmp byte [health], 2
+    jne .emptyHeart
+    mov ax, 1
+.emptyHeart:
+    push ax
+    mov ax, 3
+    push ax
+    mov ax, 303
+    push ax
+    call drawHeart
+    add sp, 6
+    pop bx
+    pop ax
+    ret
