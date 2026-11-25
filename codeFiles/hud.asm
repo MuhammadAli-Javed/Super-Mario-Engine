@@ -1,3 +1,18 @@
+;decimal number conversion, bitmap text and the HUD
+
+hudScoreText  db 'SCORE',0
+hudCoinText   db 'COINS',0
+hudWorldText  db 'WORLD',0
+hudTimeText   db 'TIME',0
+hudLivesText  db 'LIVES',0
+hudHealthText db 'HP',0
+hudWorldNum   db '1-1',0
+
+; drawNumber(x,y,loWord,hiWord,digits,colour)
+; Converts unsigned 32-bit number by repeated division by 10.
+; Pushes remainders then pops into numberText, then draws with drawText.
+; Preserves all registers and returns nothing.
+
 drawNumber:
     push bp
     mov bp, sp
@@ -51,7 +66,8 @@ drawNumber:
 heartFull  db 036h,07Fh,07Fh,03Eh,01Ch,008h,000h
 heartEmpty db 036h,049h,041h,022h,014h,008h,000h
 
-
+; Draw a 7x7 heart bitmap. Stack x,y,filled(1 or 0).
+; Inputs on stack, output framebuffer; preserves all registers.
 drawHeart:
     push bp
     mov bp, sp
@@ -107,6 +123,8 @@ drawHeart:
     pop bp
     ret
 
+; Draw score, coin total, world, clock, lives and two heart boxes.
+; Inputs: current game variables. Returns framebuffer. Preserves all registers.
 drawHUD:
     push ax
     push bx
@@ -278,6 +296,8 @@ drawHUD:
     pop ax
     ret
 
+; Draw the player pose; skip alternate frames while invulnerable.
+; Uses camera-relative position. All registers preserved.
 
 drawMario:
     push ax
