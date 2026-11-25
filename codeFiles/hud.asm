@@ -107,7 +107,7 @@ drawHeart:
     pop bp
     ret
 
-    drawHUD:
+drawHUD:
     push ax
     push bx
     mov ax, 1
@@ -277,3 +277,53 @@ drawHeart:
     pop bx
     pop ax
     ret
+
+
+drawMario:
+    push ax
+    push bx
+    push dx
+    mov ax, [lastTick]
+    and ax, 1
+    cmp byte [invuln], 0
+    je .sprite
+    cmp ax, 0
+    jne .done
+.sprite:
+    xor dx, dx
+    xor ax, ax
+    mov al, [marioFace]
+    mov dx, ax
+    mov bx, sprSmallStand
+    cmp byte [marioPose], 0
+    je .form
+    mov bx, sprSmallRun
+    cmp byte [marioPose], 1
+    je .form
+    mov bx, sprSmallJump
+.form:
+    cmp byte [health], 2
+    jne .render
+    or dx, 2
+    mov bx, sprSuperStand
+    cmp byte [marioPose], 0
+    je .render
+    mov bx, sprSuperRun
+    cmp byte [marioPose], 1
+    je .render
+    mov bx, sprSuperJump
+.render:
+    mov ax, [marioX]
+    sub ax, [cameraX]
+    push dx
+    push bx
+    push word [marioY]
+    push ax
+    call drawSprite
+    add sp, 8
+.done:
+    pop dx
+    pop bx
+    pop ax
+    ret
+
