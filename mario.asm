@@ -71,7 +71,54 @@ quitGame:
 quitNoFree:
     mov ax, 4C00h
     int 21h
+memoryError:
+    mov ax, 0003h
+    int 10h
+    mov dx, memoryErrorMsg
+    mov ah, 09h
+    int 21h
+    mov ax, 4C01h
+    int 21h
 
+memoryErrorMsg db 'Not enough DOS memory for the frame buffer.$'
 
-mov ax, 4c00h
-int 21h
+; Copy this frame's key states, for edge-triggered menu keys next frame.
+; Inputs: none. Output: keysPrev updated. Changes: FLAGS only.
+copyKeyHistory:
+    push ax
+    push cx
+    push si
+    push di
+    push es
+    push ds
+    pop es
+    mov si, keysDown
+    mov di, keysPrev
+    mov cx, 128
+    cld
+    rep movsb
+    pop es
+    pop di
+    pop si
+    pop cx
+    pop ax
+    ret
+
+; Wait for a timer interrupt to increment timerTicks (no calibrated delay).
+; Inputs: none. Output: lastTick updated. Changes: FLAGS only.
+waitFrame:
+    push ax
+.wf:
+    sti
+    hlt
+    mov ax, [timerTicks]
+    cmp ax, [lastTick]
+    je .wf
+    mov [lastTick], ax
+    pop ax
+    ret
+
+; Reserve a small stack inside the resident COM allocation.
+programStack: times 2048 db 0
+stackTop:
+programEnd:
