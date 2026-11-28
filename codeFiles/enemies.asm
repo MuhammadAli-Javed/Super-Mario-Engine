@@ -402,10 +402,12 @@ drawEnemies:
     mov bx, sprShell
 .render:
     mov ax, 0
-    push ax
-    push bx
-    push word [si+4]
-    push ax
+    push ax ; mirror flag =0
+    push bx ;sprite
+    push word [si+4] ;y
+    mov ax, [si+2]
+    sub ax, [cameraX]
+    push ax ; screen x= world x - cameraX
     call drawSprite
     add sp, 8
 .next:
